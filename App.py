@@ -1,4 +1,6 @@
 from flask import Flask, render_template, request, url_for, flash, redirect
+import model.package_model.Empresa as Empresa
+import model.package_model.Curso as Curso
 
 app = Flask(__name__)
 
@@ -9,7 +11,11 @@ def index():
 
 @app.route("/aspirante")
 def add_aspirante():
-    return "agrega aspirante"
+        obj_emp= Empresa.Empresa()
+        obj_cur= Curso.Curso()
+        lista_empresas = obj_emp.obtener_empresas()
+        lista_cursos = obj_cur.obtener_cursos()
+        return render_template('aspirante.html',lista_empresas=lista_empresas,lista_cursos=lista_cursos)
 
 @app.route("/lista_cursos")
 def lista_cursos():
