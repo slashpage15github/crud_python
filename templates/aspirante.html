@@ -1,0 +1,108 @@
+{% extends "base_bootstrap.html" %}
+	{% block body %} 
+        <body id="aspira">
+        <div class="container_aspirante">
+        <h1 id="aspira">Registrarse para uno o más cursos Please</h1>
+        <p id="aspira">Puede seleccionar 1 o más cursos, es requisito el RFC</p>
+        <form name="forma" id="forma" action="/registra" method="post" onsubmit="return valida_aspirante();">
+                {% include "sweetalerts.html" %}
+                <div id="row">
+                        <div class="col-25">
+                                <label id="aspira">RFC:</label>
+                        </div>
+                        <div class="col-75">    
+                                <input maxlength="13" class="mayusculas" type="text" name="f_rfc" id="f_rfc" value="" placeholder="Ingrese su RFC">    
+                        </div>
+                </div>
+
+                <div id="row">
+                        <div class="col-25">
+                                <label id="aspira">Nombre:</label>
+                        </div>
+                        <div class="col-75">    
+                                <input maxlength="30" class="mayusculas" type="text" name="f_nombre" id="f_nombre" value="" placeholder="Ingrese su Nombre">    
+                        </div>
+                </div>
+
+                <div id="row">
+                        <div class="col-25">
+                                <label id="aspira">Paterno:</label>
+                        </div>
+                        <div class="col-75">    
+                                <input maxlength="30" class="mayusculas" type="text" name="f_paterno" id="f_paterno" value="" placeholder="Ingrese su Apellido Paterno ">    
+                        </div>
+                </div>
+
+                <div id="row">
+                        <div class="col-25">
+                                <label id="aspira">Materno:</label>
+                        </div>
+                        <div class="col-75">    
+                                <input maxlength="30" class="mayusculas" type="text" name="f_materno" id="f_materno" value="" placeholder="Ingrese su Apellido Materno ">    
+                        </div>
+                </div>
+
+                <div id="row">
+                        <div class="col-25">
+                                <label id="aspira">Empresa:</label>
+                        </div>
+                        <div class="col-75">    
+                                <select name="f_id_empresa" id="f_id_empresa">
+                                {% if lista_empresas|length !=0  %}
+                                <option value="0">Seleccione</option>
+                                            {% for empre in lista_empresas %}
+                                                    <option value="{{ empre[0] }}">{{ empre[1] }}</option>
+                                            {% endfor %}
+                                {% else %}
+                                    <option value="0">No hay Datos</option>
+                                {% endif %}                                    
+                                </select>    
+                        </div>
+                </div>                                                                
+
+                <div id="row">
+                        <div class="col-25">
+                                <label id="aspira">Teléfono:</label>
+                        </div>
+                        <div class="col-75">    
+                                <input  maxlength="10" type="tel" name="f_telefono" id="f_telefono" value="" placeholder="Ingrese su teléfono personal">    
+                        </div>
+                </div>
+
+                <div id="row">
+                        <div class="col-25">
+                                <label id="aspira">E-mail:</label>
+                        </div>
+                        <div class="col-75">    
+                                <input maxlength="100" type="email" name="f_email" id="f_email" value="" placeholder="Ingrese su correo electrónico personal">    
+                        </div>
+                </div>
+
+                <div id="row">
+                        <div class="col-25">
+                                <label id="aspira">Curso:</label>
+                        </div>
+                        <div class="col-75">    
+                                <select name="f_id_curso" id="f_id_curso">
+                                {% if lista_cursos|length !=0  %}
+                                        <option value="0">Seleccione</option>
+                                                {% for curso in lista_cursos %}
+                                                        <option value="{{ curso[0] }}">{{ curso[1] }}</option>
+                                                {% endfor %}
+                                {% else %}
+                                        <option value="0">No hay Datos</option>
+                                {% endif %}  
+                                </select>    
+                        </div>
+                </div>                
+
+                <div id="row2">
+                            <input class="boton_menu" type="submit" name="add" value="Registrar">
+                            &nbsp;&nbsp;&nbsp;
+                            <button class="btn btn-danger" type="button" name="recarga" onclick="window.location.href='{{ url_for( 'add_aspirante') }}';">Limpiar</button>
+                        </div>                
+        </form>
+        </div>
+        <script src="{{ url_for('static', filename='js/script_aspirante.js') }}"></script>
+        </body>
+        {% endblock %}
