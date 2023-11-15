@@ -18,6 +18,7 @@ import jsonpickle
 import json
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'j\x86\x14\xcc:\x99\xb3\x91\xf8/Bv\r\xaa"\xf1\x8a\xfa(A\xa1\xe2\x85\xd6'
 
 def datetime_handler(obj):
     if isinstance(obj, (datetime, date, time)):
