@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, url_for, flash, redirect
+from flask import Flask, render_template,jsonify, request, url_for, flash, redirect
 import model.package_model.aspirantes as aspirantes
 import model.package_model.Empresa as Empresa
 import model.package_model.Curso as Curso
@@ -20,6 +20,54 @@ import json
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'j\x86\x14\xcc:\x99\xb3\x91\xf8/Bv\r\xaa"\xf1\x8a\xfa(A\xa1\xe2\x85\xd6'
 
+@app.route("/delete_curso",methods=['POST'])
+def delete_curso():
+    _curso_id=request.form['id']
+    cuantos_cursos=AspirantesCursos.existe_curso(_curso_id)
+    if cuantos_cursos == 0:
+        obj_cur= Curso.Curso()
+        datos_curso=obj_cur.eliminar_curso(_curso_id)
+        return str(datos_curso)
+    else:
+        return "-1"
+    
+
+
+@app.route("/ver_detalle_curso",methods=['POST'])
+def ver_detalle_curso():
+    _curso_id=request.form['curso_id']
+    obj_cur= Curso.Curso()
+    datos_curso=obj_cur.obtener_curso_por_id(_curso_id)
+    return render_template('ver_detalle_curso.html',datos_curso=datos_curso)
+    #return str(res_cur)
+    
+@app.route("/ver_detalle_curso_data",methods=['POST'])
+def ver_detalle_curso_data():
+    _curso_id=request.form['curso_id']
+    obj_cur= Curso.Curso()
+    datos_curso=obj_cur.obtener_curso_por_id(_curso_id)
+    data = { 
+            "id" : datos_curso[0], 
+            "nombre" : datos_curso[1],
+            "fecha" : datos_curso[2], 
+        } 
+    return jsonify(data)
+    #return str(datos_curso)    
+
+@app.route("/add_curso",methods=['POST'])
+def add_curso():
+    _f_id=request.form['f_id']
+    _f_nombre=request.form['f_nombre'].upper()
+    _fec=datetime.now()
+    if _f_id=='':
+        obj_cur= Curso.Curso(_f_id,_f_nombre,_fec)
+        res_cur=obj_cur.insertar_cursos(obj_cur)
+        return str(res_cur)
+    else:
+        obj_cur= Curso.Curso(_f_id,_f_nombre,_fec)
+        res_cur=obj_cur.update_cursos(obj_cur)
+        return str(res_cur)
+        
 def datetime_handler(obj):
     if isinstance(obj, (datetime, date, time)):
         return str(obj)
@@ -97,7 +145,9 @@ def registra_aspirante():
         
 @app.route("/lista_cursos")
 def lista_cursos():
-    return "lista de cursos"
+    obj_cur= Curso.Curso()
+    lista_cursos = obj_cur.obtener_cursos()
+    return render_template('lista_cursos.html',lista_cursos=lista_cursos)
 
 if __name__ == "__main__":
     app.run(debug=True)

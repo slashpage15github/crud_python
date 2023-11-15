@@ -4,6 +4,25 @@ class Curso:
         self.__id_curso=id_curso
         self.__nombre_curso=nombre_curso
         self.__fecha_alta=fecha_alta
+        
+    def update_cursos(self, obj_asp):
+        #return obj_asp.__fecha_alta
+        #return obj_asp
+        conexion = Database.Database()
+        with conexion.cursor as cursor:
+            try:
+                query="update catalogo_curso set NOMBRE_CURSO=%s where ID_CURSO=%s"
+                vals=(obj_asp.__nombre_curso,obj_asp.__id_curso)
+                #return (query % vals) 
+                affected=cursor.execute(query,vals)
+                conexion.conn.commit()
+                return str(cursor.rowcount)
+            except Exception as e:
+                return e
+            except pymysql.err.ProgrammingError as except_detail:
+                return print("pymysql.err.ProgrammingError: «{}»".format(except_detail))
+            finally:
+                conexion.conn.close()        
 
     def eliminar_curso(self,id):
         affected=0
